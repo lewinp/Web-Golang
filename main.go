@@ -17,4 +17,12 @@ func main() {
 	mux.HandleFunc("/form", handler.Form)
 	mux.HandleFunc("/process", handler.Process)
 
+	// Static Files
+
+	fileServer := http.FileServer(http.Dir("assets"))
+	mux.Handle("/static/", http.StripPrefix("/static", fileServer))
+
+	log.Println("server started at localhost:3000")
+	err := http.ListenAndServe(":3000", mux)
+	log.Fatal(err)
 }
